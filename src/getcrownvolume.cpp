@@ -28,15 +28,46 @@ int main (int argc, char** argv)
 {
 	pcl::PCDReader reader;
 	pcl::PCDWriter writer;
-	std::cout << "Reading plot-level cloud: " << std::flush;
-	pcl::PointCloud<pcl::PointXYZ>::Ptr plot(new pcl::PointCloud<pcl::PointXYZ>);
-	reader.read(argv[1],*plot);
-	std::cout << "complete" << std::endl;
-	for(int i=2;i<argc;i++)
+
+        std::cout << "Reading plot-level cloud: " << std::flush;
+        pcl::PointCloud<pcl::PointXYZ>::Ptr plot(new pcl::PointCloud<pcl::PointXYZ>);
+        int pos;
+        for(int i=2;i<argc;i++)
+        {
+                std::string fname;
+                std::vector<std::string> name1,name2,name3;
+                boost::split(name1,argv[i],boost::is_any_of("/"));
+                boost::split(name2,name1[name1.size()-1],boost::is_any_of("."));
+                boost::split(name3,name2[0],boost::is_any_of("_"));
+                fname = name3[0];
+                if(fname == "stem")
+                {
+                        pos = i;
+                        break;
+                }
+                else
+                {
+                        pcl::PointCloud<pcl::PointXYZ>::Ptr tmp(new pcl::PointCloud<pcl::PointXYZ>);
+                        reader.read(argv[i],*tmp);
+                        *plot += *tmp;
+		}
+        }
+
+        std::cout << "complete" << std::endl;
+
+	for(int i=pos;i<argc;i++)
 	{
 		std::cout << "---------------" << std::endl;
 		//
-		std::vector<std::string> id = getFileID(argv[i]);
+//		std::vector<std::string> id = getFileID(argv[i]);
+		std::string fname;
+                std::vector<std::string> name1,name2,name3;
+                boost::split(name1,argv[i],boost::is_any_of("/"));
+                boost::split(name2,name1[name1.size()-1],boost::is_any_of("."));
+                boost::split(name3,name2[0],boost::is_any_of("_"));
+                fname = name3[1];
+
+		//std::cout << fname << std::endl;
 		pcl::PointCloud<pcl::PointXYZ>::Ptr stem(new pcl::PointCloud<pcl::PointXYZ>);
 		reader.read(argv[i],*stem);
 		//
@@ -66,7 +97,7 @@ int main (int argc, char** argv)
 		*volume += *stem;
 		*volume += *zslice;
 		std::stringstream ss;
-		ss << "volume_" << id[0] << ".pcd";
+		ss << "volume_" << fname << ".pcd";
 		writer.write(ss.str(),*volume,true);	
 		std::cout << ss.str() << std::endl;
 	}
