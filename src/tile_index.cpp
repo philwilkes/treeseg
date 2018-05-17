@@ -28,7 +28,7 @@ int main (int argc, char** argv)
         pcl::PointCloud<pcl::PointXYZ>::Ptr plot(new pcl::PointCloud<pcl::PointXYZ>);
         reader.read(argv[i],*plot);
 
-        Eigen::Vector4f min,max,centroid;
+        Eigen::Vector4f min, max;
         pcl::getMinMax3D(*plot,min,max);
         std::cout << name << " " << min[0]+half_length <<" " << min[1]+half_length << std::endl;
     }
