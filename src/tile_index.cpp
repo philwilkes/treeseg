@@ -25,12 +25,10 @@ int main (int argc, char** argv)
         std::string name = fname2.at(1);
 
         pcl::PCDReader reader;
-        pcl::PCDWriter writer;
         pcl::PointCloud<pcl::PointXYZ>::Ptr plot(new pcl::PointCloud<pcl::PointXYZ>);
         reader.read(argv[i],*plot);
 
         Eigen::Vector4f min,max,centroid;
-        pcl::compute3DCentroid(*plot,centroid);
         pcl::getMinMax3D(*plot,min,max);
         std::cout << name << " " << min[0]+half_length <<" " << min[1]+half_length << std::endl;
     }
