@@ -197,6 +197,7 @@ int main(int argc,char** argv)
 				float X = ((pc.x[m]*pc.matrix[0])+(pc.y[m]*pc.matrix[1])+(pc.z[m]*pc.matrix[2]))+pc.matrix[3];
 				float Y = ((pc.x[m]*pc.matrix[4])+(pc.y[m]*pc.matrix[5])+(pc.z[m]*pc.matrix[6]))+pc.matrix[7];
 				float Z = ((pc.x[m]*pc.matrix[8])+(pc.y[m]*pc.matrix[9])+(pc.z[m]*pc.matrix[10]))+pc.matrix[11];
+                float D = pc.reflectance[m];
 				for(int n=0;n<length;n++)
 				{
 					if(X >= coords[n][0] && X < coords[n][1])
@@ -208,6 +209,7 @@ int main(int argc,char** argv)
 								xyzfiles[n].write(reinterpret_cast<const char*>(&X),sizeof(X));
 								xyzfiles[n].write(reinterpret_cast<const char*>(&Y),sizeof(Y));
 								xyzfiles[n].write(reinterpret_cast<const char*>(&Z),sizeof(Z));
+                                xyzfiles[n].write(reinterpret_cast<const char*>(&D),sizeof(D));
 								count[n] += 1;
 							}
 						}
@@ -223,8 +225,8 @@ int main(int argc,char** argv)
 	for(int q=0;q<length;q++)
 	{
 		std::ofstream headerstream("header.tmp");
-		headerstream << "VERSION 0.7" << std::endl << "FIELDS x y z" << std::endl << "SIZE 4 4 4" << std::endl << "TYPE F F F" << std::endl << "COUNT 1 1 1" << std::endl << "WIDTH " << count[q] << std::endl << "HEIGHT 1" << std::endl << "VIEWPOINT 0 0 0 1 0 0 0" << std::endl << "POINTS " << count[q] << std::endl << "DATA binary" << std::endl;
-		headerstream.close();
+        headerstream << "VERSION 0.7" << std::endl << "FIELDS x y z intensity" << std::endl << "SIZE 4 4 4 4" << std::endl << "TYPE F F F F" << std::endl << "COUNT 1 1 1 1" << std::endl << "WIDTH " << count[q] << std::endl << "HEIGHT 1" << std::endl << "VIEWPOINT 0 0 0 1 0 0 0" << std::endl << "POINTS " << count[q] << std::endl << "DATA binary" << std::endl;	
+    	headerstream.close();
 		ss.str("");
 		ss << "cat header.tmp " << xyznames[q] << " > " << pcdnames[q] << "; rm header.tmp " << xyznames[q];
 		std::string string;

@@ -35,7 +35,7 @@ def write_pcd(df, path, binary=True):
         
         pcd.write('# .PCD v0.7 - Point Cloud Data file format\n')
         pcd.write('VERSION 0.7\n')
-        pcd.write('FIELDS ' + ' '.join(df.columns) + '\n')
+        pcd.write('FIELDS ' + ' '.join(['x', 'y', 'z', 'intensity'][:len(df.columns)]) + '\n')
         pcd.write('SIZE ' + '4 ' * len(df.columns) + '\n')
         pcd.write('TYPE ' + 'F ' * len(df.columns) + '\n')
         pcd.write('COUNT ' + '1 ' * len(df.columns) + '\n')
@@ -45,7 +45,7 @@ def write_pcd(df, path, binary=True):
         pcd.write('POINTS {}\n'.format(len(df)))
         if binary:
             pcd.write('DATA binary\n')
-            df.as_matrix().tofile(pcd)
+            df.as_matrix().astype('f4').tofile(pcd)
         else:
             pcd.write('DATA ascii\n')
             df.to_csv(pcd, sep=' ', index=False, header=False)

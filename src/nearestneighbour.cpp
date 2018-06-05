@@ -9,7 +9,7 @@
 int main (int argc, char** argv)
 {
 	pcl::PCDReader reader;
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZI>);
 	float zstep = atof(argv[1]);
 	int nnearest = atoi(argv[2]);
 	reader.read(argv[3],*cloud);

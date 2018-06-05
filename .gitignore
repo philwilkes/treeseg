@@ -31,7 +31,12 @@
 *.out
 *.app
 
-#Directories
+# Directories
 /build/
 /include/riegl/
-src/CMakeLists.txt
+
+# Files
+/src/CMakeLists.txt
+/src/getcrownvolume_hh.cpp
+/src/clustercrown.cpp
+include/vz-400_basic.h

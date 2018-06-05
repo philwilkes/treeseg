@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 	std::stringstream ss;
 	//
 	std::cout << "Reading plot-level cloud: " << std::flush;
-	pcl::PointCloud<pcl::PointXYZ>::Ptr plot(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZI>::Ptr plot(new pcl::PointCloud<pcl::PointXYZI>);
 	reader.read(argv[2],*plot);
 	std::cout << "complete" << std::endl;
 	//
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "----------: " << argv[i] << std::endl;		
 		std::vector<std::string> id = getFileID(argv[i]);
-		pcl::PointCloud<pcl::PointXYZ>::Ptr foundstem(new pcl::PointCloud<pcl::PointXYZ>);
+		pcl::PointCloud<pcl::PointXYZI>::Ptr foundstem(new pcl::PointCloud<pcl::PointXYZI>);
 		reader.read(argv[i],*foundstem);
 		//
 		std::cout << "RANSAC cylinder fit: " << std::flush;
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 		std::cout << cyl.rad << std::endl;	
 		//
 		std::cout << "Segmenting extended cylinder: " << std::flush;
-		pcl::PointCloud<pcl::PointXYZ>::Ptr volume(new pcl::PointCloud<pcl::PointXYZ>);
+		pcl::PointCloud<pcl::PointXYZI>::Ptr volume(new pcl::PointCloud<pcl::PointXYZI>);
 		float expansionfactor = 6;
 		cyl.rad = cyl.rad*expansionfactor;
 		spatial3DCylinderFilter(plot,cyl,volume);
@@ -44,9 +44,9 @@ int main(int argc, char* argv[])
 		std::cout << ss.str() << std::endl;
 		//
 		std::cout << "Segmenting ground returns: " << std::flush;
-		pcl::PointCloud<pcl::PointXYZ>::Ptr bottom(new pcl::PointCloud<pcl::PointXYZ>);
-		pcl::PointCloud<pcl::PointXYZ>::Ptr top(new pcl::PointCloud<pcl::PointXYZ>);
-		pcl::PointCloud<pcl::PointXYZ>::Ptr vnoground(new pcl::PointCloud<pcl::PointXYZ>);
+		pcl::PointCloud<pcl::PointXYZI>::Ptr bottom(new pcl::PointCloud<pcl::PointXYZI>);
+		pcl::PointCloud<pcl::PointXYZI>::Ptr top(new pcl::PointCloud<pcl::PointXYZI>);
+		pcl::PointCloud<pcl::PointXYZI>::Ptr vnoground(new pcl::PointCloud<pcl::PointXYZI>);
 		pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
 		float zdelta = 0.25;
 		Eigen::Vector4f min, max;
@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 		}
 		float dmax = (nnmax+nnmin)/2;
 		std::cout << dmax << ", " << std::flush;
-		std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clusters;
+		std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters;
 		euclideanClustering(vnoground,dmax,3,clusters);
 		ss.str("");
 		ss << "cylinder_noground_clusters_" << id[0] << ".pcd";
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
 		//
 		std::cout << "Region-based segmentation: " << std::flush; 
 		int idx = findClosestIdx(foundstem,clusters,true);
-		std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> regions;
+		std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> regions;
 		nnearest = 50;
 		int nmin = 3;
 		float smoothness = atof(argv[1]);
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 		std::cout << ss.str() << std::endl;
 		//
 		std::cout << "Correcting stem: " << std::flush;
-		pcl::PointCloud<pcl::PointXYZ>::Ptr stem(new pcl::PointCloud<pcl::PointXYZ>);
+		pcl::PointCloud<pcl::PointXYZI>::Ptr stem(new pcl::PointCloud<pcl::PointXYZI>);
 		idx = findClosestIdx(foundstem,regions,true);
 		nnearest = 60;
 		zdelta = 0.75;
