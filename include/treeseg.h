@@ -41,8 +41,8 @@ struct cylinder
         float steprad;
         float stepcov;
         float radratio;
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
-        pcl::PointCloud<pcl::PointXYZ>::Ptr inliers;
+	pcl::PointCloud<pcl::PointXYZI>::Ptr cloud;
+        pcl::PointCloud<pcl::PointXYZI>::Ptr inliers;
 };
 
 struct treeinfo
@@ -55,44 +55,44 @@ struct treeinfo
 
 std::vector<std::string> getFileID(char *fname);
 
-std::vector<float> dNN(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, int nnearest);
-std::vector<std::vector<float>> dNNz(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, int nnearest, float zstep);
+std::vector<float> dNN(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, int nnearest);
+std::vector<std::vector<float>> dNNz(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, int nnearest, float zstep);
 
-float minDistBetweenClouds(pcl::PointCloud<pcl::PointXYZ>::Ptr &a, pcl::PointCloud<pcl::PointXYZ>::Ptr &b);
+float minDistBetweenClouds(pcl::PointCloud<pcl::PointXYZI>::Ptr &a, pcl::PointCloud<pcl::PointXYZI>::Ptr &b);
 
-void downsample(pcl::PointCloud<pcl::PointXYZ>::Ptr &original, float edgelength, pcl::PointCloud<pcl::PointXYZ>::Ptr &filtered);
+void downsample(pcl::PointCloud<pcl::PointXYZI>::Ptr &original, float edgelength, pcl::PointCloud<pcl::PointXYZI>::Ptr &filtered);
 
-void extractIndices(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, pcl::PointIndices::Ptr &inliers, bool invert, pcl::PointCloud<pcl::PointXYZ>::Ptr filtered);
-int findClosestIdx(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> &clouds, bool biggest);
+void extractIndices(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, pcl::PointIndices::Ptr &inliers, bool invert, pcl::PointCloud<pcl::PointXYZI>::Ptr filtered);
+int findClosestIdx(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> &clouds, bool biggest);
 
-void spatial1DFilter(pcl::PointCloud<pcl::PointXYZ>::Ptr &original, std::string dimension, float min, float max, pcl::PointCloud<pcl::PointXYZ>::Ptr &filtered);
-void spatial3DCylinderFilter(pcl::PointCloud<pcl::PointXYZ>::Ptr &original, cylinder cyl, pcl::PointCloud<pcl::PointXYZ>::Ptr &filtered);
+void spatial1DFilter(pcl::PointCloud<pcl::PointXYZI>::Ptr &original, std::string dimension, float min, float max, pcl::PointCloud<pcl::PointXYZI>::Ptr &filtered);
+void spatial3DCylinderFilter(pcl::PointCloud<pcl::PointXYZI>::Ptr &original, cylinder cyl, pcl::PointCloud<pcl::PointXYZI>::Ptr &filtered);
 
-std::vector<std::vector<float>> getDemAndSlice(pcl::PointCloud<pcl::PointXYZ>::Ptr &plot, float resolution, float zmin, float zmax, pcl::PointCloud<pcl::PointXYZ>::Ptr &slice);
+std::vector<std::vector<float>> getDemAndSlice(pcl::PointCloud<pcl::PointXYZI>::Ptr &plot, float resolution, float zmin, float zmax, pcl::PointCloud<pcl::PointXYZI>::Ptr &slice);
 
-void computePCA(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, Eigen::Vector4f &centroid, Eigen::Matrix3f &covariancematrix, Eigen::Matrix3f &eigenvectors, Eigen::Vector3f &eigenvalues);
-void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, int nnearest, pcl::PointCloud<pcl::Normal>::Ptr &normals);
+void computePCA(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, Eigen::Vector4f &centroid, Eigen::Matrix3f &covariancematrix, Eigen::Matrix3f &eigenvectors, Eigen::Vector3f &eigenvalues);
+void estimateNormals(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, int nnearest, pcl::PointCloud<pcl::Normal>::Ptr &normals);
 
-void euclideanClustering(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, float dmax, int nmin, std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> &clusters);
-void regionSegmentation(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, int nnearest, int nmin, float smoothness, std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> &regions);
+void euclideanClustering(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, float dmax, int nmin, std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> &clusters);
+void regionSegmentation(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, int nnearest, int nmin, float smoothness, std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> &regions);
 
-void writeClouds(std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clusters, std::string fname, bool doPCA);
+void writeClouds(std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters, std::string fname, bool doPCA);
 
-std::vector<float> fitCircle(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, int nnearest);
-void fitCylinder(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, int nnearest, bool finite, bool diagnostics, cylinder &cyl);
+std::vector<float> fitCircle(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, int nnearest);
+void fitCylinder(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, int nnearest, bool finite, bool diagnostics, cylinder &cyl);
 void cylinderDiagnostics(cylinder &cyl, int nnearest);
-void fitPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, int nnearest, pcl::PointIndices::Ptr &inliers);
+void fitPlane(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, int nnearest, pcl::PointIndices::Ptr &inliers);
 
 bool intersectionTest3DBox(Eigen::Vector4f amin, Eigen::Vector4f amax, Eigen::Vector4f bmin, Eigen::Vector4f bmax);
-void catIntersectingClouds(std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> &clouds);
+void catIntersectingClouds(std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> &clouds);
 
-void correctStem(pcl::PointCloud<pcl::PointXYZ>::Ptr &stem, float nnearest, float zstart, float zstep, float stepcovmax, float radchangemin, pcl::PointCloud<pcl::PointXYZ>::Ptr &corrected);
+void correctStem(pcl::PointCloud<pcl::PointXYZI>::Ptr &stem, float nnearest, float zstart, float zstep, float stepcovmax, float radchangemin, pcl::PointCloud<pcl::PointXYZI>::Ptr &corrected);
 
-float getDBH(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud, int nnearest, float zstep, float diffmax);
+float getDBH(pcl::PointCloud<pcl::PointXYZI>::Ptr &cloud, int nnearest, float zstep, float diffmax);
 
 bool sortCol(const std::vector<int>& v1, const std::vector<int>& v2);
-int findPrincipalCloudIdx(std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> &clouds);
+int findPrincipalCloudIdx(std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> &clouds);
 
 float interpolatedNNZ(float x, std::vector<std::vector<float>> nndata, bool extrapolate);
-void removeFarRegions(std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> &clusters);
-void buildTree(std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> &clusters, pcl::PointCloud<pcl::PointXYZ>::Ptr &tree);
+void removeFarRegions(std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> &clusters);
+void buildTree(std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> &clusters, pcl::PointCloud<pcl::PointXYZI>::Ptr &tree);
