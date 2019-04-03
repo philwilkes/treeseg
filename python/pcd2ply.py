@@ -14,36 +14,6 @@ def apply_rotation(M, df):
     df.loc[:, ['x', 'y', 'z']] = r_[:, :3]
     return df
 
-#def write_ply(output_name, pc):
-#
-#    cols = ['x', 'y', 'z']
-#    pc[['x', 'y', 'z']] = pc[['x', 'y', 'z']].astype('f4')
-#
-#    with open(output_name, 'w') as ply:
-#
-#        ply.write("ply\n")
-#        ply.write('format binary_little_endian 1.0\n')
-#        ply.write("comment Author: Phil Wilkes\n")
-#        ply.write("obj_info generated with pcd2ply.py\n")
-#        ply.write("element vertex {}\n".format(len(pc)))
-#        ply.write("property float x\n")
-#        ply.write("property float y\n")
-#        ply.write("property float z\n")
-#        if 'red' in pc.columns:
-#            cols += ['red', 'green', 'blue']
-#            pc[['red', 'green', 'blue']] = pc[['red', 'green', 'blue']].astype('i')
-#            ply.write("property int red\n")
-#            ply.write("property int green\n")
-#            ply.write("property int blue\n")
-#        for col in pc.columns:
-#            if col in cols: continue
-#            cols += [col]
-#            pc[col] = pc[col].astype('f4')
-#            ply.write("property float {}\n".format(col))
-#        ply.write("end_header\n")
-#
-#        ply.write(pc[cols].to_records(index=False).tobytes())
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
