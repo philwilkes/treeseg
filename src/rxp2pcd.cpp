@@ -197,7 +197,7 @@ int main(int argc,char** argv)
 				float X = ((pc.x[m]*pc.matrix[0])+(pc.y[m]*pc.matrix[1])+(pc.z[m]*pc.matrix[2]))+pc.matrix[3];
 				float Y = ((pc.x[m]*pc.matrix[4])+(pc.y[m]*pc.matrix[5])+(pc.z[m]*pc.matrix[6]))+pc.matrix[7];
 				float Z = ((pc.x[m]*pc.matrix[8])+(pc.y[m]*pc.matrix[9])+(pc.z[m]*pc.matrix[10]))+pc.matrix[11];
-                float D = pc.reflectance[m];
+                		float D = pc.reflectance[m];
 				for(int n=0;n<length;n++)
 				{
 					if(X >= coords[n][0] && X < coords[n][1])
@@ -209,7 +209,7 @@ int main(int argc,char** argv)
 								xyzfiles[n].write(reinterpret_cast<const char*>(&X),sizeof(X));
 								xyzfiles[n].write(reinterpret_cast<const char*>(&Y),sizeof(Y));
 								xyzfiles[n].write(reinterpret_cast<const char*>(&Z),sizeof(Z));
-                                xyzfiles[n].write(reinterpret_cast<const char*>(&D),sizeof(D));
+                                				xyzfiles[n].write(reinterpret_cast<const char*>(&D),sizeof(D));
 								count[n] += 1;
 							}
 						}
