@@ -1,4 +1,5 @@
-//Andrew Burt - a.burt@ucl.ac.uk
+// written by Andrew Burt - a.burt@ucl.ac.uk
+// modified by Phil Wilkes
 
 #include <string>
 #include <sstream>
